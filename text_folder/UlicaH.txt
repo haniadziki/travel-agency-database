@@ -1,0 +1,120 @@
+Calle Gran Vía 45
+Carrer de Pau Claris 23
+Avenida de la Constitución 8
+Carrer del Carme 15
+Calle de Alcalá 56
+Avenida Diagonal 112
+Calle Mayor 34
+Carrer de l'Exposició 12
+Avenida de la Paz 19
+Calle del Prado 21
+Carrer del Comte d'Urgell 8
+Avenida de la República Argentina 60
+Calle de Vallehermoso 76
+Carrer de Pau 17
+Avenida del Libertador 9
+Calle de Serrano 122
+Carrer de Sant Joan 18
+Avenida de la Albufera 37
+Calle de San Francisco 25
+Carrer del Rosselló 33
+Avenida de la Coruña 78
+Calle de Cea Bermúdez 53
+Carrer de Provença 30
+Avenida del Puerto 3
+Calle de Bravo Murillo 67
+Carrer de Mallorca 99
+Avenida de Europa 10
+Calle de Río Duero 40
+Carrer de València 74
+Avenida de los Reyes Católicos 5
+Calle de Vallehermoso 12
+Carrer del Consell de Cent 22
+Avenida de Andalucía 24
+Calle de Cartagena 51
+Carrer del Carrer de la Mare de Déu de Montserrat 2
+Avenida de las Américas 19
+Calle de las Delicias 31
+Carrer de la Independència 8
+Avenida de Aragón 58
+Calle de los Ángeles 44
+Carrer del Montseny 16
+Avenida de la Guindalera 7
+Calle de Ponzano 72
+Carrer de Blasco Ibáñez 49
+Avenida del Mar 3
+Calle de la Princesa 29
+Carrer de l'Olivera 5
+Avenida de la Paz 11
+Calle de la Muntanya 23
+Carrer de Rius i Taulet 14
+Avenida de la Paz 85
+Calle de la Virgen 42
+Carrer de Tarragona 6
+Avenida de la Luz 10
+Calle de la Laguna 30
+Carrer de la Rambla 21
+Avenida de Alfonso XIII 68
+Calle de Núñez de Balboa 11
+Carrer de Gran de Gràcia 4
+Avenida de la Florida 15
+Calle de Sant Antoni 27
+Carrer de Tuset 9
+Avenida de Castilla 53
+Calle de la Iglesia 19
+Carrer de Pau 30
+Avenida de los Reyes 11
+Calle de los Carabanchel 50
+Carrer de Cerdanyola 7
+Avenida de Santa Fe 24
+Calle del Sol 27
+Carrer del Parc 20
+Avenida de Villaverde 45
+Calle de López de Hoyos 70
+Carrer de Pina 18
+Avenida de la Estrella 32
+Calle de Ronda 55
+Carrer de Can Parellada 12
+Avenida de Juan de Austria 14
+Calle de Enrique Granados 28
+Carrer de Rambla Catalunya 9
+Avenida de la Magdalena 21
+Calle de Valverde 3
+Carrer de Cerdanya 42
+Avenida de Sierra 56
+Calle de las Heras 60
+Carrer de Mallorca 27
+Avenida de los Pinos 8
+Calle del Paraíso 12
+Carrer de l'Onze de Setembre 15
+Avenida de la Constitución 37
+Calle de Santa Bárbara 5
+Carrer de Camp de l'Arpa 8
+Avenida de la Luna 13
+Calle del Camino 44
+Carrer de la Lluna 9
+Avenida de la Paz 38
+Calle de Martínez Campos 56
+Carrer de la Mare de Déu de Montserrat 3
+Avenida de Alcalá 99
+Calle de las Hortalizas 70
+Carrer de Castelló 16
+Avenida de Goya 25
+Calle de la Plazuela 34
+Carrer de Santa Catalina 10
+Avenida de Rivadavia 17
+Calle de los Cipreses 41
+Carrer de Tarragona 99
+Avenida de Galicia 12
+Calle de la Chancelería 21
+Carrer de la Constitución 19
+Avenida de la Malvarrosa 27
+Calle de Mesones 8
+Carrer de Nou de la Rambla 14
+Avenida de San Sebastián 18
+Calle de Bravo Murillo 51
+Carrer de la Creu Coberta 11
+Avenida de la Encina 9
+Calle de los Jardines 10
+Carrer de la Rambla de l'Exposició 22
+Avenida de Móstoles 29

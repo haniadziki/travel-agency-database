@@ -1,0 +1,106 @@
+Agiou Georgiou 24
+Ippodamou 17
+Vasilissis Sofias 30
+Stadiou 54
+Leoforos Kifisias 122
+Agiou Dimitriou 8
+Syntagma 5
+Fokionos 2
+Mavili 13
+Patriarchou Ioakim 47
+Mitropoleos 15
+Vassilissis Amalias 43
+Dionysiou Areopagitou 21
+Pireos 110
+Vasilissis Olgas 36
+Agias Sofias 11
+El. Venizelou 89
+Kifisias 134
+Pelekanou 19
+Kifisias Avenue 118
+Neas Erythreas 6
+Agiou Ioannou 27
+Vouliagmenis 83
+Ethnikis Antistaseos 3
+Konstantinopouleos 4
+Agios Nikolaos 14
+Omonoia 22
+Irakleiou 77
+Kalamaki 9
+Agias Paraskevis 28
+Vasilissis Olgas 59
+Kerameikos 12
+Iasonos 45
+Akadimias 67
+Korydallos 7
+Petralona 34
+Vouliagmeni 18
+Neos Kosmos 56
+Paleon Faliro 13
+Alimos 81
+Agios Eleftherios 12
+Melissia 29
+Nea Smyrni 16
+Kalamata 42
+Peristeri 21
+Thiseio 33
+Kifisia 82
+Agios Dimitrios 65
+Pagrati 5
+Evangelistria 30
+Kolonaki 4
+Oikonomou 28
+Agios Ioannis 74
+Perama 53
+Agioi Anargyroi 49
+Moschato 12
+Gerakas 15
+Faliro 32
+Kypseli 26
+Nikaia 19
+Nefeli 56
+Kifisia 113
+Egaleo 18
+Nea Ionia 12
+Voula 17
+Nea Makri 8
+Acharnes 2
+Vironas 21
+Piraeus 9
+Lykavittos 10
+Agios Panteleimonas 11
+Lysandrou 3
+Chalandri 44
+Metamorphosi 14
+Kalamaki 22
+Korydallos 65
+Paleochori 5
+Zografou 70
+Papagou 3
+Nea Erithraia 40
+Piraeus 19
+Monastiraki 9
+Pefki 12
+Geraka 6
+Pallini 37
+Polichni 5
+Korydallos 21
+Mandra 17
+Psiri 18
+Petroupoli 25
+Agia Marina 20
+Piraeus 28
+Kifisia 45
+Kavouri 34
+Lamia 13
+Kalamata 20
+Thessaloniki 22
+Chalandri 39
+Nea Kifisia 15
+Thessaloniki 55
+Athens 67
+Piraeus 3
+Lysandros 11
+Kifisia 72
+Athens 45
+Piraeus 32

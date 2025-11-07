@@ -1,0 +1,100 @@
+Via Roma 1
+Corso Vittorio Emanuele II 2
+Piazza del Duomo 3
+Via Garibaldi 4
+Viale Giuseppe Mazzini 5
+Via San Francesco 6
+Corso Italia 7
+Via Nazionale 8
+Piazza della Repubblica 9
+Viale della Libertà 10
+Via Dante Alighieri 11
+Via della Conciliazione 12
+Piazza San Marco 13
+Viale Guglielmo Marconi 14
+Via Veneto 15
+Via delle Terme 16
+Piazza Castello 17
+Viale delle Belle Arti 18
+Via Torino 19
+Corso Umberto I 20
+Piazza Navona 21
+Via Manzoni 22
+Viale Luigi Cadorna 23
+Via dei Fori Imperiali 24
+Piazza di Spagna 25
+Viale Trastevere 26
+Via della Vite 27
+Corso Sempione 28
+Piazza del Popolo 29
+Via San Giovanni in Laterano 30
+Viale delle Alpi 31
+Via dei Martiri 32
+Piazza della Scala 33
+Viale Regina Margherita 34
+Via del Corso 35
+Via dei Mille 36
+Piazza della Signoria 37
+Via Larga 38
+Viale delle Province 39
+Via Pio IX 40
+Piazza San Pietro 41
+Viale Augusto 42
+Via Mazzini 43
+Piazza Cavour 44
+Viale dei Parioli 45
+Via dei Due Macelli 46
+Piazza di Santa Maria Novella 47
+Corso Vittorio Emanuele 48
+Via Trento 49
+Piazza del Mercato 50
+Via Dante 51
+Viale Marco Polo 52
+Via Giuseppe Verdi 53
+Piazza della Vittoria 54
+Viale Garibaldi 55
+Via Po 56
+Piazza dei Miracoli 57
+Via della Croce 58
+Viale Fratelli Rosselli 59
+Via Giuseppe Mazzini 60
+Piazza del Carmine 61
+Via del Plebiscito 62
+Viale Primo Maggio 63
+Corso Sempione 64
+Via Giuseppe di Vittorio 65
+Piazza Santo Stefano 66
+Viale Libertà 67
+Via Lazzaretto 68
+Piazza delle Erbe 69
+Via dei Banchi Nuovi 70
+Viale Don Minzoni 71
+Via della Spiga 72
+Piazza San Carlo 73
+Corso di Porta Romana 74
+Via Monte Nero 75
+Piazza del Popolo 76
+Viale San Michele 77
+Via dei Colli 78
+Piazza Indipendenza 79
+Viale Marco Polo 80
+Via del Tritone 81
+Piazza Porta Romana 82
+Viale Giovanni XXIII 83
+Via della Repubblica 84
+Piazza di Porta Maggiore 85
+Via della Libertà 86
+Viale del Vignola 87
+Via Mazzini 88
+Piazza San Giovanni 89
+Viale della Stazione 90
+Via San Luca 91
+Piazza della Pace 92
+Viale della Stazione Centrale 93
+Via di San Giovanni 94
+Piazza della Rosa 95
+Viale Filippo Turati 96
+Via del Gesù 97
+Piazza Re Enzo 98
+Viale Valgimigli 99
+Via Giuseppe Garibaldi 100

@@ -1,0 +1,101 @@
+Baker Street 1
+Oxford Street 2
+Fleet Street 3
+Abbey Road 4
+Regent Street 5
+King's Road 6
+Portobello Road 7
+Charing Cross Road 8
+Brompton Road 9
+Great Portland Street 10
+Shaftesbury Avenue 11
+Tottenham Court Road 12
+Piccadilly 13
+Long Acre 14
+Victoria Street 15
+Euston Road 16
+Bond Street 17
+Holborn 18
+Whitehall 19
+St James's Street 20
+Pall Mall 21
+Coventry Street 22
+Dover Street 23
+Marlborough Road 24
+Drury Lane 25
+Charlotte Street 26
+Wigmore Street 27
+Chiswick High Road 28
+Clerkenwell Road 29
+Upper Street 30
+Kingsway 31
+Hampstead Road 32
+Southwark Street 33
+Camden High Street 34
+Great Russell Street 35
+Harley Street 36
+Leadenhall Street 37
+Cannon Street 38
+Farringdon Street 39
+Lombard Street 40
+Cornhill 41
+Tower Bridge Road 42
+The Strand 43
+Ludgate Hill 44
+Park Lane 45
+Pentonville Road 46
+Berwick Street 47
+King's Cross Road 48
+Edgware Road 49
+Brunswick Place 50
+Chislehurst Road 51
+Elms Road 52
+St John's Wood Road 53
+St Martin's Lane 54
+Barnes High Street 55
+Islington Green 56
+Cromwell Road 57
+Holloway Road 58
+Putney High Street 59
+Kingsbury Road 60
+Golders Green Road 61
+Holloway Road 62
+Exeter Road 63
+Waterloo Road 64
+Stoke Newington Road 65
+Battersea Park Road 66
+Aldgate East 67
+Marylebone Road 68
+Kingsland Road 69
+Caledonian Road 70
+New Bond Street 71
+Mile End Road 72
+Leicester Square 73
+Greenwich High Road 74
+Tooting High Street 75
+South Lambeth Road 76
+East End Road 77
+Kensington High Street 78
+Chiswick Road 79
+Tottenham High Road 80
+Richmond Road 81
+Streatham High Road 82
+Upper Richmond Road 83
+Wood Green High Road 84
+Theobalds Road 85
+Camden Road 86
+Barbican 87
+Great Eastern Street 88
+Shoreditch High Street 89
+Hackney Road 90
+Brixton Road 91
+Hammersmith Road 92
+Southgate Road 93
+Bayswater Road 94
+Kennington Road 95
+Old Kent Road 96
+Queensway 97
+Belsize Park Road 98
+Norfolk Avenue 99
+Sloane Avenue 100
+Victoria Embankment 101

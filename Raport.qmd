@@ -1,0 +1,511 @@
+---
+title: "Team10 Database Analysis"
+author: "Natalia Chmiel, Julia Zalewska, Hanna Frej, Hanna Dziki"
+date: last-modified
+date-format: "[Wygenerowano] D [stycznia] YYYY"
+format: pdf
+toc: true
+execute:
+  echo: false
+---
+
+```{python}
+# Import necessary libraries
+import mysql.connector
+import pandas as pd
+import matplotlib.pyplot as plt
+import requests
+```
+
+
+
+# Analiza kosztów i zysków oraz liczby zamówień od każdej oferty
+
+```{python}
+
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10"
+)
+mycursor = con.cursor()
+mycursor.execute("""
+    WITH 
+PopTrips AS (
+        SELECT offers.offer_id, COUNT(orders.order_id) AS number_of_orders,
+        SUM(offers.overall_price) AS total 
+        FROM orders 
+        JOIN offers ON offers.offer_id = orders.offer_id 
+        GROUP BY orders.offer_id
+    ),
+
+OfferCosts AS (
+    SELECT offer_id, 
+    plane_price + attractions_price + hotel_price AS total_cost 
+    FROM offers
+),
+
+Profit AS (
+    SELECT PopTrips.offer_id, 
+    PopTrips.number_of_orders, 
+    PopTrips.total, 
+    OfferCosts.total_cost,
+    (PopTrips.total - OfferCosts.total_cost) AS profit,
+    offers.hotel_name
+    FROM PopTrips 
+    JOIN OfferCosts ON PopTrips.offer_id = OfferCosts.offer_id
+    JOIN offers ON PopTrips.offer_id = offers.offer_id
+)
+
+SELECT 
+    Profit.offer_id,
+    Profit.number_of_orders,
+    Profit.total,
+    Profit.total_cost,
+    Profit.profit,
+    Profit.hotel_name,
+    CASE 
+        WHEN Profit.profit > 0 THEN 'Profitable'
+        ELSE 'Not Profitable'
+    END AS profitability
+FROM Profit 
+ORDER BY Profit.number_of_orders DESC;
+""")
+
+result = mycursor.fetchall()
+
+profits = []
+for row in result:
+    profits.append({
+        "offer_id": row[0],
+        "number_of_orders": row[1],
+        "total_revenue": row[2],
+        "total_cost": row[3],
+        "profit": row[4],
+        "hotel_name": row[5],
+        "profitability": row[6]
+    })
+
+
+profit_df = pd.DataFrame(profits)
+
+# 1. Najczęściej wybierana wycieczka
+most_popular = profit_df.sort_values(by="number_of_orders", ascending=False).iloc[0]
+
+# 2. Największy zysk z jednej wycieczki
+most_profitable = profit_df.sort_values(by="profit", ascending=False).iloc[0]
+
+# 3. Najrzadziej wybierana wycieczka
+least_popular = profit_df.sort_values(by="number_of_orders", ascending=True).iloc[0]
+
+# 4. Najmniejszy zysk z jednej wycieczki
+least_profitable = profit_df.sort_values(by="profit", ascending=True).iloc[0]
+
+# Wykres
+plt.bar(profit_df["offer_id"], profit_df["number_of_orders"], color="blue", label="Liczba zamówień")
+plt.xlabel("offer_id")
+plt.ylabel("Liczba zamówień")
+plt.title("Liczba zamówień według ofert")
+plt.xticks(profit_df["offer_id"])
+plt.tight_layout()
+plt.show()
+
+mycursor.close()
+con.close()
+```
+
+Z wykresu odczytujemy dane o najczęściej i najrzadziej wybieranych wycieczkach.
+Najczęściej wybierana wycieczka to wycieczka nr `{python} int(most_popular['offer_id'])`,
+organizowana w hotelu `{python} most_popular['hotel_name']`. Zysk wynosi z tej wycieczki to `{python} int(most_popular['profit'])` zł, a koszta wynoszą `{python} int(most_popular['total_cost'])` zł.
+Zalecane jest zwiększenie ilości wycieczki nr `{python} int(most_profitable['offer_id'])` oraz zmniejszenie ilosci wycieczki nr `{python} int(least_profitable['offer_id'])`.
+
+
+# Analiza wycieczek odnoszących sukcesy i tych, które odnoszą porażkę
+```{python}
+
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10"
+)
+
+mycursor = con.cursor()
+
+mycursor.execute('''
+WITH ranked_orders AS (
+    SELECT 
+        customer_id, 
+        offer_id, 
+        LEAD(trip_end) OVER (PARTITION BY customer_id ORDER BY trip_end) AS next_trip_end
+    FROM orders
+)
+SELECT 
+    offer_id, 
+    ROUND(SUM(next_trip_end IS NOT NULL) * 100.0 / COUNT(*), 2) AS succes_rate
+
+FROM ranked_orders
+GROUP BY offer_id ORDER BY succes_rate DESC;''')
+
+result = mycursor.fetchall()
+best_trips = []
+best_rate= []
+worst_trips = []
+worst_rate = []
+
+for i in range(3):
+    best_trips.append(result[i][0])
+    best_rate.append(result[i][1])
+    worst_trips.append(result[-i-1][0])
+    worst_rate.append(result[-i-1][1])
+mycursor.close()
+con.close()
+```
+Wycieczki odnoszące sukces to `{python} ", ".join(map(str, best_trips))`. Natomiast wycieczki, które zniechęciły klientów do dalszego kupowania w naszym biurze to `{python} ", ".join(map(str, worst_trips))`. Stosunek klientów wracających do naszego biura i klientów, którzy już nie zakupili wycieczki ponownie, dla wycieczki numer `{python} best_trips[0]` wynosi `{python} int(best_rate[0])`%, natomiast dla wycieczki numer `{python} worst_trips[0]` wynosi `{python} int(worst_rate[0])`%.
+
+
+# Zarobek firmy w poszczególnych miesiącach roku
+
+```{python}
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10"
+)
+
+mycursor = con.cursor()
+
+mycursor.execute('''SELECT 
+    YEAR(order_date) AS year,
+    MONTH(order_date) AS month,
+    SUM(balance) AS monthly_revenue
+FROM orders 
+JOIN offers ON orders.offer_id = offers.offer_id 
+JOIN finance ON offers.offer_id = finance.offer_id
+GROUP BY year, month
+ORDER BY year, month;''')
+
+result = mycursor.fetchall()
+
+monthly = []
+for row in result:
+    monthly.append({
+        "year_month": f"{row[0]},{row[1]}",
+        "monthly_revenue": row[2]
+    })
+
+profit_in_months_df = pd.DataFrame(monthly)
+
+plt.bar(profit_in_months_df["year_month"], profit_in_months_df["monthly_revenue"], color="blue", label="Zarobek")
+plt.xlabel("Rok i miesiąc")
+plt.ylabel("Zarobek")
+plt.xticks(profit_in_months_df["year_month"])
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+mycursor.close()
+con.close()
+```
+Firma zarabia znacząco wiecej w okresie letnim niż w okresie zimowym, dlatego warto się zastanowić nad zwiększeniem reklamy w tym okresie.  
+
+# Zysk firmy od poszczególnych pracowników
+```{python}
+
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10"
+)
+mycursor = con.cursor()
+mycursor.execute("""
+    SELECT 
+        staff_id, 
+        SUM(finance.balance) AS total_profit
+    FROM 
+        orders
+    JOIN 
+        finance ON orders.offer_id = finance.offer_id
+    GROUP BY 
+        staff_id
+    ORDER BY 
+        total_profit DESC;
+""")
+
+staff_data = mycursor.fetchall()
+staff_ids = [row[0] for row in staff_data]
+total_profits = [row[1] for row in staff_data]
+
+best_worker_index = total_profits.index(max(total_profits))
+best_worker = staff_ids[best_worker_index]
+best_worker_profit = total_profits[best_worker_index]
+
+worst_worker_index = total_profits.index(min(total_profits))
+worst_worker = staff_ids[worst_worker_index]
+worst_worker_profit = total_profits[worst_worker_index]
+
+plt.bar(staff_ids, total_profits, color='blue')
+plt.title('Zysk firmy od poszczególnych pracowników')
+plt.xlabel('ID Pracownika')
+plt.ylabel('Zysk')
+plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+plt.tight_layout()
+plt.show()
+
+mycursor.close()
+con.close()
+```
+Najwięcej zarobił dla firmy pracownik `{python} best_worker` z zyskiem `{python} int(best_worker_profit)` zł.
+Najmniej zarobił dla firmy pracownik `{python} worst_worker` z zyskiem `{python} int(worst_worker_profit)` zł.
+
+# Najbardziej zasłużeni klienci 
+```{python}
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10" 
+)
+
+mycursor = con.cursor()
+
+mycursor.execute("""
+    SELECT customer_id, SUM(overall_price) AS total_spent
+    FROM orders 
+    JOIN offers ON orders.offer_id = offers.offer_id
+    GROUP BY customer_id
+    ORDER BY total_spent DESC
+    LIMIT 10;
+""")
+customer_data = mycursor.fetchall()
+
+print("Lista 10 klientów, którzy wydali najwięcej:")
+for customer in customer_data:
+    print(f"Klient ID: {customer[0]}, Wydana kwota: {customer[1]}")
+
+best_customer = customer_data[0]
+print(f"Najwięcej wydał klient {best_customer[0]} z kwotą {best_customer[1]}. Otrzymuje rabat 5%.")
+mycursor.close()
+con.close()
+```
+Najwięcej wydał klient `{python} best_customer[0]` z kwotą `{python} int(best_customer[1])`. Przyznajemy mu rabat 5%.
+
+
+# Analiza ilości wycieczek w danym miesiącu  
+
+```{python}
+
+polish_month_names = [
+    "", "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", 
+    "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"
+]
+
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10"
+)
+
+mycursor = con.cursor()
+
+mycursor.execute("""
+    SELECT MONTH(order_date) AS month, COUNT(DISTINCT customer_id) AS number_of_customers
+    FROM orders
+    GROUP BY month
+    ORDER BY month;
+""")
+data = mycursor.fetchall()
+months = [polish_month_names[row[0]] for row in data]
+number_of_customers = [row[1] for row in data]
+
+best_month_index = number_of_customers.index(max(number_of_customers))
+best_month = months[best_month_index]
+best_number = number_of_customers[best_month_index]
+
+worst_month_index = number_of_customers.index(min(number_of_customers))
+worst_month = months[worst_month_index]
+worst_number = number_of_customers[worst_month_index]
+
+plt.plot(months, number_of_customers, label='Liczba klientów', color='red', marker='o')
+plt.title('Liczba obsłużonych klientów w każdym miesiącu')
+plt.xlabel('Miesiące')
+plt.ylabel('Liczba klientów')
+plt.xticks(rotation=45)
+plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+mycursor.close()
+con.close()
+```
+
+Z wykresu wynika, że najwięcej wycieczek zrealizowano w miesiącu `{python} best_month` w liczbie `{python} int(best_number)`, natomiast najmniej dochodowym miesiącem był `{python} worst_month`, który wygenerował następującą liczbę wycieczek `{python} int(worst_number)`. Zalecane jest zwiększenie ilości ofert w powyższym miesiącu `{python} best_month`, z kolei zmniejszyć ilość wyjazdów w miesiącu `{python} worst_month`.
+
+# Analiza zainteresowania miastami wśród klientów
+
+```{python}
+
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10"
+)
+
+mycursor = con.cursor()
+
+mycursor.execute("""
+    SELECT offers.city_id AS city_id, city.city AS city_name, COUNT(DISTINCT customer_id) AS number_of_customers
+    FROM orders
+    JOIN offers ON orders.offer_id = offers.offer_id
+    JOIN city ON offers.city_id = city.city_id
+    GROUP BY city_id
+    ORDER BY city_name;
+""")
+city_data = mycursor.fetchall()
+city_name = [row[1] for row in city_data]
+number_of_customers1 = [row[2] for row in city_data]
+
+best_city_index = number_of_customers1.index(max(number_of_customers1))
+best_city = city_name[best_city_index]
+best_city_number = number_of_customers1[best_city_index]
+
+worst_city_index = number_of_customers1.index(min(number_of_customers1))
+worst_city = city_name[worst_city_index]
+worst_city_number = number_of_customers1[worst_city_index]
+
+plt.bar(city_name, number_of_customers1, color='red')
+plt.title('Liczba klientów odwiedzających dane miasto')
+plt.xlabel('Miasta')
+plt.ylabel('Liczba klientów')
+plt.xticks(rotation=90)
+plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+plt.tight_layout()
+plt.show()
+
+mycursor.close()
+con.close()
+```
+
+Z wykresu wynika, że największym zainteresowaniem cieszy się miasto `{python} best_city`, które postanowiło odwiedzić, aż `{python} int(best_city_number)` klientów. Natomiast stosunkowo mało klientów postanowiło skorzystać z oferty do miasta `{python} worst_city`, bo aż `{python} int(worst_city_number)`. Rekomendowane jest zwiększenie ilości ofert do miasta `{python} best_city`, z kolei ograniczyć ilośc ofert w mieście `{python} worst_city`.
+
+Najwięcej klientów odwiedziło miasto `{python} best_city` z liczbą `{python} best_city_number` klientów.
+Najmniej klientów odwiedziło miasto `{python} worst_city` z liczbą `{python} worst_city_number` klientów.
+
+# Analiza zainteresowania krajami wśród klientów
+
+```{python}
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10"
+)
+
+mycursor = con.cursor()
+
+mycursor.execute("""
+    SELECT 
+    country.country_id AS country_id, 
+    country.country AS country_name, 
+    COUNT(DISTINCT orders.customer_id) AS number_of_customers
+    FROM orders
+    JOIN offers ON orders.offer_id = offers.offer_id
+    JOIN city ON offers.city_id = city.city_id
+    JOIN country ON city.country_id = country.country_id
+    GROUP BY country_name
+    ORDER BY number_of_customers DESC;
+""")
+country_data = mycursor.fetchall()
+country_name = [row[1] for row in country_data]
+number_of_customers2 = [row[2] for row in country_data]
+
+best_country_index = number_of_customers2.index(max(number_of_customers2))
+best_country = country_name[best_country_index]
+best_country_number = number_of_customers2[best_country_index]
+
+worst_country_index = number_of_customers2.index(min(number_of_customers2))
+worst_country = country_name[worst_country_index]
+worst_country_number = number_of_customers2[worst_country_index]
+
+plt.bar(country_name, number_of_customers2, color='blue')
+plt.title('Liczba klientów odwiedzających dany kraj')
+plt.xlabel('Kraje')
+plt.ylabel('Liczba klientów')
+plt.xticks(rotation=90)
+plt.gca().yaxis.set_major_locator(plt.MaxNLocator(integer=True))
+plt.tight_layout()
+plt.show()
+
+mycursor.close()
+con.close()
+```
+
+Z wykresu wynika, że najpopularnijeszy okazał się kraj `{python} best_country`, który postanowiło zwiedzić, aż `{python} int(best_country_number)` klientów. Niestety takimi wynikami nie może się pochwalić kraj `{python} worst_country`, który odwiedziło tylko `{python} int(worst_country_number)` klientów. Rekomendowane jest zwiększenie ilości ofert do kraju `{python} best_country`, natomiast definitywnie powinniśmy zrezygnować z części ofert do kraju `{python} worst_country`.
+
+# Dane o hotelach z największym i najmniejszym zyskiem
+```{python}
+con = mysql.connector.connect(
+    host="giniewicz.it",
+    user="team10",
+    password="te@mzaio",
+    database="team10"
+)
+mycursor = con.cursor()
+mycursor.execute("""
+    WITH 
+    HotelProfits AS (
+        SELECT offers.hotel_name, 
+               COUNT(DISTINCT orders.offer_id) AS number_of_trips, -- Liczba wycieczek
+               SUM(offers.overall_price) AS total_revenue,
+               SUM(offers.plane_price + offers.attractions_price + offers.hotel_price) AS total_cost,
+               (SUM(offers.overall_price) - SUM(offers.plane_price + offers.attractions_price + offers.hotel_price)) AS profit
+        FROM orders 
+        JOIN offers ON orders.offer_id = offers.offer_id 
+        GROUP BY offers.hotel_name
+    ),
+
+    RankedProfits AS (
+        SELECT hotel_name, number_of_trips, total_revenue, total_cost, profit,
+               RANK() OVER (ORDER BY profit DESC) AS profit_rank_desc,
+               RANK() OVER (ORDER BY profit ASC) AS profit_rank_asc
+        FROM HotelProfits
+    )
+
+    SELECT 
+        hp.hotel_name AS hotel_with_highest_profit,
+        hp.profit AS highest_profit,
+        hp.number_of_trips AS highest_profit_trips, -- Liczba wycieczek dla hotelu z najwyższym zyskiem
+        lp.hotel_name AS hotel_with_lowest_profit,
+        lp.profit AS lowest_profit,
+        lp.number_of_trips AS lowest_profit_trips -- Liczba wycieczek dla hotelu z najniższym zyskiem
+    FROM (SELECT * FROM RankedProfits WHERE profit_rank_desc = 1) hp
+    JOIN (SELECT * FROM RankedProfits WHERE profit_rank_asc = 1) lp;
+""")
+
+# Pobranie wyników zapytania
+result = mycursor.fetchall()
+
+# Zamknięcie połączenia z bazą
+mycursor.close()
+con.close()
+
+# Wyświetlenie wyników
+for row in result:
+    hotel_with_highest_profit = row[0]
+    highest_profit = row[1]
+    highest_profit_trips = row[2]
+    hotel_with_lowest_profit = row[3]
+    lowest_profit = row[4]
+    lowest_profit_trips = row[5]
+
+```
+Sieć hoteli, która ma największy zysk to `{python} hotel_with_highest_profit`. `{python} int(highest_profit_trips)` wycieczek zostało zorganizowanych przez czas działania firmy w połączeniu z tym hotelem. 
+Sieć hoteli, która ma najmniejszy zysk to `{python} hotel_with_lowest_profit`. `{python} int(lowest_profit_trips)` wycieczek zostało zorganizowanych w połączeniu z tym hotelem. 
+
+Ze względu na znaczący dochód dla hotelu `{python} hotel_with_highest_profit` proponujemy ponowne negocjacje z właścicielami hotelu w celu ustalenia korzystniejszych cen. Natomiast z hotelem `{python} hotel_with_lowest_profit` proponujemy ograniczenie współpracy ze względu na niskie zainteresowanie kilentów tym hotelem.
+
