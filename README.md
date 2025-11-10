@@ -1,1 +1,7 @@
 # Travel Agency Database
+
+Projekt Travel Agency Database przedstawia model bazy danych biura podróży, obejmujący jego strukturę, analizę danych oraz dokumentację techniczną. W repozytorium znajdują się pliki schematu bazy danych w języku SQL (Tabele.sql), skrypty analizy danych (Analiza_danych.sql), dokumentacja projektu (Dokumentacja.html) oraz moduły w języku Python (m.in. city.py, offers.py, customers.py, orders.py, staff.py, finance.py, salary.py) służące do obsługi i przetwarzania danych. Projekt stanowi praktyczny przykład projektowania, implementacji i analizy bazy danych w kontekście działalności wymyślonego biura podróży.
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+The “Travel Agency Database” project presents a database model for a travel agency’s offerings, capturing its structure, data analysis, and detailed documentation. The repository contains MySQL-based schema files (Tabele.sql), data analysis scripts (Analiza_danych.sql), documentation (Dokumentacja.html), and Python modules (e.g., city.py, offers.py, customers.py, orders.py, staff.py, finance.py, salary.py) to interact with or manipulate the data. The README describes the purpose and resources of the project, providing a practical example of database design and data processing for a fictional travel-agency context.
